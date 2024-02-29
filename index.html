@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ArcGIS Map</title>
+  <link rel="stylesheet" href="https://js.arcgis.com/3.42/esri/css/esri.css">
+  <script src="https://js.arcgis.com/3.42/"></script>
+  <style>
+    html,body,#map {padding: 0; margin: 0; height: 100%;}
+	#LocateButton {position: absolute; top: 95px; left: 20px; z-index: 50;}
+    #Search {display: block; position: absolute; top: 20px; right: 20px; z-index: 50;}
+	.esriScalebar {width: auto; height: auto; right: 10px; background-color: #FFFFFFB3; padding: 0 8px 2px 4px;}
+    .esriScaleLabelDiv {top: 0; padding: 0; }
+	.esriScalebarLabel.esriScalebarSecondNumber {width: auto; left: auto; height: auto;}
+	.esriAttribution {max-width: calc(100vw - 28px) !important;}
+  </style>
+  <script>
+    var map;
+    var load = ["dojo/parser","esri/map","esri/dijit/Scalebar","esri/dijit/LocateButton","esri/dijit/Search","esri/layers/WebTiledLayer","esri/layers/VectorTileLayer"];
+    var func = function (parser,Map,Scalebar,LocateButton,Search,WebTiledLayer,VectorTileLayer) {
+      parser.parse();
+      map = new Map("map", { basemap: "satellite", logo: false, minZoom: 2, maxZoom: 22, zoom: 15, center: [116.391,39.907] });
+	  new Scalebar({ map: map, attachTo: "bottom-right", scalebarStyle: "line", scalebarUnit: "metric" });
+	  var esri_label = "https://www.arcgis.com/sharing/rest/content/items/f240fe360b434afc87dd989bf0c0b825/resources/styles/root.json";
+      map.addLayer(new VectorTileLayer(esri_label));
+      var geoLocate = new LocateButton({ map: map }, "LocateButton");
+      geoLocate.startup();
+	  var search = new Search({ map: map}, "Search");
+      search.startup();
+    };
+    require(load,func);
+  </script>
+</head>
+
+<body>
+  <div id="map">
+    <div id="LocateButton"></div>
+    <div id="Search"></div>
+  </div>
+</body>
+
+</html>
